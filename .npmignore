@@ -1,8 +1,0 @@
-.idea/
-.cache/
-media/
-
-.eslintrc
-circular-progress-bar.less
-test.js
-webpack.config.js
