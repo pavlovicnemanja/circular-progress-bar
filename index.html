@@ -2,9 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Circular progress-bar</title>
+    <style>
+        body {
+            background-color: #999;
+            margin: 0;
+        }
+
+        h1 {
+            padding-left: 1em;
+            font-family: sans-serif;
+            text-shadow: -1px -1px 0 #DDD;
+        }
+
+        .example {
+            display: inline-block;
+            width: 50%;
+            height: 191px;
+            padding: 20px 0;
+            position: relative;
+            border-bottom: 1px dashed #666;
+        }
+
+        .circular-progress-bar {
+            vertical-align: top;
+        }
+        pre {
+            position: absolute;
+            left: 200px;
+            background-color: #FFF;
+            display: inline-block;
+            width: 30%;
+            vertical-align: top;
+        }
+        pre:before {
+            content: "Options";
+            position: absolute;
+            background-color: #FFF;
+            left: 0;
+            bottom: 100%;
+            padding: .2em .5em 0;
+        }
+
+        a {
+            color: #0095ff;
+        }
+        a:visited {
+            color: #ffa114;
+        }
+    </style>
 </head>
 <body>
-$END$
+    <h1>Examples</h1>
+    <main id="main"></main>
+    <footer>For more fine tune, see <a href="https://github.com/GMartigny/circular-progress-bar/blob/master/documentations.md">the documentation</a>.</footer>
+    <script src="https://unpkg.com/circular-progress-bar"></script>
+    <script>
+        window.addEventListener("load", () => {
+            const mainWrapper = document.getElementById("main");
+
+            const options = [
+                {},
+                {
+                    background: "",
+                    valueBackground: "",
+                },
+                {},
+                {
+                    valueUnit: "",
+                    valueDecimals: 1,
+                },
+                {
+                    colors: ["red"],
+                },
+                {
+                    size: 40,
+                }
+            ];
+            let allCPB = [];
+
+            options.forEach(opt => {
+                const cpb = new CircularProgressBar(0, opt);
+                allCPB.push(cpb);
+                const exampleWrapper = document.createElement("div");
+                exampleWrapper.className = "example";
+                cpb.appendTo(exampleWrapper);
+                const optNode = document.createElement("pre");
+                optNode.textContent = JSON.stringify(opt, null, 4);
+                exampleWrapper.appendChild(optNode);
+                mainWrapper.appendChild(exampleWrapper);
+            });
+
+            let c = 0;
+            setInterval(() => {
+                allCPB.forEach((cpb, i) => {
+                    if (i === 2) {
+                        cpb.values = (new Array(8)).fill(c / 8);
+                    }
+                    else {
+                        cpb.value = c
+                    }
+                });
+                if ((c += Math.random() * 5) > 100) {
+                    c = 0;
+                }
+            }, 500);
+        });
+    </script>
 </body>
 </html>
